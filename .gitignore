@@ -1,0 +1,20 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Frontend build outputs
+dist/
+.vite/
+
+# Rust and Tauri
+target/
+src-tauri/target/
+
+# Environment
+.env
+.env.*
+
+# OS and editor
+.DS_Store
+.idea/
+.vscode/
