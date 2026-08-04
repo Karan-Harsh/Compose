@@ -19,7 +19,9 @@ We are not optimizing for rapid feature delivery or short-term hacks.
 
 ## Current Status
 
-The project is in `Phase 0`, where we are defining:
+The project has completed `Phase 0` and is now in `Phase 1`.
+
+Phase 0 established:
 
 - Repository structure
 - Architectural boundaries
@@ -27,7 +29,15 @@ The project is in `Phase 0`, where we are defining:
 - Development conventions
 - Roadmap and delivery phases
 
-Application features will not be implemented until the foundation is solid.
+Phase 1 has now begun with:
+
+- npm workspace setup
+- `apps/desktop` scaffolded with Tauri v2, React, TypeScript, Vite, and TailwindCSS
+- Shared linting, formatting, and TypeScript configuration
+- Initial Rust command and service wiring
+- CI validation for install, lint, typecheck, web build, and native check
+
+Application features still remain intentionally out of scope until the scaffold is stable.
 
 ## Product Direction
 
@@ -97,4 +107,4 @@ Major architectural decisions are captured as ADRs:
 
 ## Near-Term Focus
 
-Phase 0 has produced the initial architecture baseline. The next step is a deliberate Phase 1 scaffold using the plans documented above, without pulling feature work forward too early.
+The repository now has a working desktop scaffold and validated Rust/React boundary. The next step is to deepen Phase 1 selectively: refine contributor automation, stabilize the project shell, and prepare for Phase 2 native services without leaking feature work forward.

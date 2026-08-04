@@ -38,6 +38,8 @@ Outcome:
 
 ## Phase 1: Project Scaffolding
 
+Status: `In progress`
+
 Goals:
 
 - Scaffold `apps/desktop` with Tauri v2, React, TypeScript, Vite, and TailwindCSS
@@ -52,6 +54,15 @@ Expected outputs:
 - Shared TypeScript configuration strategy
 - Base Rust command registration
 - CI workflow and repository automation
+
+Current progress:
+
+- npm workspaces configured
+- `apps/desktop` scaffolded
+- Shared TypeScript, ESLint, Prettier, and EditorConfig added
+- Minimal Rust command and service boundary implemented
+- CI workflow added
+- Validation passing for lint, typecheck, web build, and native `cargo check`
 
 Supporting design docs:
 

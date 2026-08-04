@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+
+:root {
+  color: #1c1917;
+  background: #f5efe1;
+  font-family: 'Space Grotesk', 'Avenir Next', 'Segoe UI', sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+* {
+  box-sizing: border-box;
+}

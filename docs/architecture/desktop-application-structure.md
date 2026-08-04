@@ -10,7 +10,6 @@ Its structure should make it obvious where UI code ends, application orchestrati
 
 ```text
 apps/desktop/
-  public/
   src/
     app/
     components/
@@ -32,10 +31,13 @@ apps/desktop/
       main.rs
     Cargo.toml
     tauri.conf.json
+    icons/
   package.json
   tsconfig.json
   vite.config.ts
 ```
+
+The current scaffold intentionally implements only the directories needed to support the Phase 1 shell. Additional directories like `components`, `features`, `hooks`, `platform`, and `public` should appear when they earn their keep rather than as empty placeholders.
 
 ## Frontend Boundaries
 
@@ -54,7 +56,7 @@ Examples:
 
 Reusable presentational components.
 
-This directory should stay mostly UI-focused.
+This directory should stay mostly UI-focused. The current scaffold keeps the first presentational pieces close to `src/app` until reusable UI emerges naturally.
 
 ### `src/features`
 

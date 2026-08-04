@@ -57,3 +57,16 @@ Phase 1 is complete when:
 - The Rust command layer is wired to the frontend
 - The repo structure matches the documented architecture
 - No feature code has been smuggled into the scaffold
+
+## Current Implementation Snapshot
+
+The repository now includes the first Phase 1 baseline:
+
+- Root npm workspace configuration
+- Shared TypeScript, ESLint, Prettier, and EditorConfig setup
+- `apps/desktop` with Vite, React, TailwindCSS, and Tauri wiring
+- A thin frontend command client
+- Initial Rust commands delegated through services
+- CI validation for install, lint, typecheck, web build, and native check
+
+The remaining Phase 1 work is refinement rather than first-time scaffolding.

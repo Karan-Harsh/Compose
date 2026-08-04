@@ -11,16 +11,11 @@ apps/desktop/src-tauri/src/
   commands/
     mod.rs
     app.rs
-    system.rs
+    window.rs
   services/
     mod.rs
     window_service.rs
-    clipboard_service.rs
-    settings_service.rs
-  platform/
-    mod.rs
-    macos/
-    windows/
+    app_info_service.rs
   state/
     mod.rs
     app_state.rs
@@ -30,6 +25,8 @@ apps/desktop/src-tauri/src/
   lib.rs
   main.rs
 ```
+
+The current scaffold keeps the native side intentionally small. `platform/`, `clipboard_service.rs`, and `settings_service.rs` should be introduced when their responsibilities become real rather than being added as empty ceremony.
 
 ## Module Responsibilities
 
