@@ -21,6 +21,7 @@ Before adding code:
 - Read the architecture docs in [`docs/architecture`](/Users/karan/Documents/proj/docs/architecture/overview.md)
 - Read relevant ADRs in [`docs/decisions`](/Users/karan/Documents/proj/docs/decisions/ADR-0001-monorepo-structure.md)
 - Confirm whether the proposed work belongs in Phase 1 or later
+- For scaffold work, align with the Phase 1 blueprint in [docs/architecture/phase-1-scaffold-plan.md](/Users/karan/Documents/proj/docs/architecture/phase-1-scaffold-plan.md)
 
 If a change alters the architecture, add or update an ADR.
 
@@ -44,6 +45,8 @@ Please document:
 - New service boundaries
 - Public contracts between packages
 - Non-obvious tradeoffs
+
+If implementation changes the intended scaffold or module boundaries, update the related docs in the same change set.
 
 ## Pull Request Guidance
 

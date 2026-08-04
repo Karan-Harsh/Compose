@@ -6,7 +6,7 @@ This roadmap is intentionally staged so that architecture, tooling, and operatio
 
 ## Phase 0: Foundation
 
-Status: `In progress`
+Status: `Completed`
 
 Goals:
 
@@ -30,6 +30,12 @@ Exit criteria:
 - We agree on the command-driven domain model
 - We agree on initial package responsibilities
 
+Outcome:
+
+- Repository foundation documented
+- Initial ADRs accepted
+- Phase 1 scaffold blueprint defined
+
 ## Phase 1: Project Scaffolding
 
 Goals:
@@ -46,6 +52,14 @@ Expected outputs:
 - Shared TypeScript configuration strategy
 - Base Rust command registration
 - CI workflow and repository automation
+
+Supporting design docs:
+
+- [Phase 1 Scaffold Plan](/Users/karan/Documents/proj/docs/architecture/phase-1-scaffold-plan.md)
+- [Workspace Strategy](/Users/karan/Documents/proj/docs/architecture/workspace-strategy.md)
+- [Desktop Application Structure](/Users/karan/Documents/proj/docs/architecture/desktop-application-structure.md)
+- [Rust Module Boundaries](/Users/karan/Documents/proj/docs/architecture/rust-module-boundaries.md)
+- [Command And Service Design](/Users/karan/Documents/proj/docs/architecture/command-and-service-design.md)
 
 ## Phase 2: Core Platform Services
 

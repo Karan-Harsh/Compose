@@ -80,6 +80,11 @@ See the architecture docs for the rationale behind this layout:
 
 - [Architecture Overview](/Users/karan/Documents/proj/docs/architecture/overview.md)
 - [Repository Structure](/Users/karan/Documents/proj/docs/architecture/repository-structure.md)
+- [Phase 1 Scaffold Plan](/Users/karan/Documents/proj/docs/architecture/phase-1-scaffold-plan.md)
+- [Workspace Strategy](/Users/karan/Documents/proj/docs/architecture/workspace-strategy.md)
+- [Desktop Application Structure](/Users/karan/Documents/proj/docs/architecture/desktop-application-structure.md)
+- [Rust Module Boundaries](/Users/karan/Documents/proj/docs/architecture/rust-module-boundaries.md)
+- [Command And Service Design](/Users/karan/Documents/proj/docs/architecture/command-and-service-design.md)
 - [Tauri Command Guidelines](/Users/karan/Documents/proj/docs/api/tauri-command-guidelines.md)
 
 ## Decision Records
@@ -92,4 +97,4 @@ Major architectural decisions are captured as ADRs:
 
 ## Near-Term Focus
 
-Phase 1 should begin only after we agree on the Phase 0 foundation. Once approved, the next step is to scaffold the desktop app and project tooling inside the structure defined here.
+Phase 0 has produced the initial architecture baseline. The next step is a deliberate Phase 1 scaffold using the plans documented above, without pulling feature work forward too early.
