@@ -12,10 +12,21 @@ apps/desktop/src-tauri/src/
     mod.rs
     app.rs
     window.rs
+    settings.rs
+    clipboard.rs
+    hotkey.rs
+    accessibility.rs
   services/
     mod.rs
     window_service.rs
     app_info_service.rs
+    settings_service.rs
+    clipboard_service.rs
+    hotkey_service.rs
+    accessibility_service.rs
+  platform/
+    mod.rs
+    input.rs
   state/
     mod.rs
     app_state.rs
@@ -26,7 +37,7 @@ apps/desktop/src-tauri/src/
   main.rs
 ```
 
-The current scaffold keeps the native side intentionally small. `platform/`, `clipboard_service.rs`, and `settings_service.rs` should be introduced when their responsibilities become real rather than being added as empty ceremony.
+Phase 2 introduced real settings, clipboard, hotkey, accessibility, and `platform/input` modules. Deeper OS-specific AX/UIA capture should still grow behind `platform/` as needed.
 
 ## Module Responsibilities
 

@@ -19,7 +19,7 @@ We are not optimizing for rapid feature delivery or short-term hacks.
 
 ## Current Status
 
-The project has completed `Phase 0` and is now in `Phase 1`.
+The project has completed `Phase 0` and `Phase 1`, and is now in `Phase 2`.
 
 Phase 0 established:
 
@@ -29,7 +29,7 @@ Phase 0 established:
 - Development conventions
 - Roadmap and delivery phases
 
-Phase 1 has now begun with:
+Phase 1 delivered:
 
 - npm workspace setup
 - `apps/desktop` scaffolded with Tauri v2, React, TypeScript, Vite, and TailwindCSS
@@ -37,7 +37,15 @@ Phase 1 has now begun with:
 - Initial Rust command and service wiring
 - CI validation for install, lint, typecheck, web build, and native check
 
-Application features still remain intentionally out of scope until the scaffold is stable.
+Phase 2 has begun with:
+
+- SQLite-backed `SettingsService` (`load_settings` / `save_settings`)
+- `ClipboardService` text read/write commands
+- `HotkeyService` OS registration via `tauri-plugin-global-shortcut` (focuses main window)
+- `AccessibilityService` selected-text capture (`clipboard_fallback`) before window focus
+- Frontend command client and store wiring for the new platform services
+
+Still deferred in Phase 2: deeper AX/UIA capture, AI provider contracts, and the product command registry pipeline.
 
 ## Product Direction
 
@@ -107,4 +115,4 @@ Major architectural decisions are captured as ADRs:
 
 ## Near-Term Focus
 
-The repository now has a working desktop scaffold and validated Rust/React boundary. The next step is to deepen Phase 1 selectively: refine contributor automation, stabilize the project shell, and prepare for Phase 2 native services without leaking feature work forward.
+Deepen Phase 2: define AI provider contracts and a lightweight command registry, keep product command UI out until Phase 3.

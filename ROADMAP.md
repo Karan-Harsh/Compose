@@ -38,7 +38,7 @@ Outcome:
 
 ## Phase 1: Project Scaffolding
 
-Status: `In progress`
+Status: `Completed`
 
 Goals:
 
@@ -55,7 +55,7 @@ Expected outputs:
 - Base Rust command registration
 - CI workflow and repository automation
 
-Current progress:
+Outcome:
 
 - npm workspaces configured
 - `apps/desktop` scaffolded
@@ -74,6 +74,8 @@ Supporting design docs:
 
 ## Phase 2: Core Platform Services
 
+Status: `In progress`
+
 Goals:
 
 - Introduce native service boundaries
@@ -90,6 +92,22 @@ Candidate services:
 - `AccessibilityService`
 - `SettingsService`
 - `AIService`
+
+Current progress:
+
+- `SettingsService` persists `AppSettings` in SQLite (`typeflow.db` under app data)
+- `ClipboardService` supports text get/set via `arboard`
+- `HotkeyService` registers the preferred shortcut with `tauri-plugin-global-shortcut`
+- Pressing the hotkey captures selected text first, then focuses the main window
+- `AccessibilityService` uses a guarded clipboard-fallback strategy (`get_selected_text`, `get_last_selection`)
+- Tauri commands and frontend client/store wiring added for settings, clipboard, hotkey, and selection
+- Settings service unit tests cover default load and validation
+
+Next in Phase 2:
+
+- Deeper AX/UIA selection paths behind `platform/`
+- AI provider contracts (still no UI feature commands)
+- Lightweight command registry metadata without Phase 3 palette UI
 
 ## Phase 3: Command Palette Shell
 
