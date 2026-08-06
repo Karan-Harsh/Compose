@@ -25,6 +25,10 @@ export async function showPalette(): Promise<void> {
   return invoke<void>('show_palette')
 }
 
+export async function hidePalette(): Promise<void> {
+  return invoke<void>('hide_palette')
+}
+
 export async function loadSettings(): Promise<AppSettings> {
   return invoke<AppSettings>('load_settings')
 }
@@ -84,3 +88,4 @@ export async function completeAi(
 ): Promise<AiCompletionResponse> {
   return invoke<AiCompletionResponse>('complete_ai', { request })
 }
+

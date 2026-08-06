@@ -36,6 +36,10 @@ pub fn run() {
 
             let state = app.state::<AppState>();
             state
+                .window_service
+                .configure_palette_behavior(app.handle())
+                .map_err(|error| -> Box<dyn std::error::Error> { Box::new(error) })?;
+            state
                 .hotkey_service
                 .bootstrap(app.handle(), &state.settings_service)
                 .map_err(|error| -> Box<dyn std::error::Error> { Box::new(error) })?;
@@ -46,6 +50,7 @@ pub fn run() {
             commands::app::get_app_info,
             commands::app::health_check,
             commands::window::show_palette,
+            commands::window::hide_palette,
             commands::settings::load_settings,
             commands::settings::save_settings,
             commands::clipboard::get_clipboard_text,

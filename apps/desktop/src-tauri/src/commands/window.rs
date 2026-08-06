@@ -12,3 +12,14 @@ pub fn show_palette<R: Runtime>(
         .show_main_window(&app_handle)
         .map_err(|error| error.to_string())
 }
+
+#[tauri::command]
+pub fn hide_palette<R: Runtime>(
+    app_handle: AppHandle<R>,
+    state: State<'_, AppState>,
+) -> Result<(), String> {
+    state
+        .window_service
+        .hide_main_window(&app_handle)
+        .map_err(|error| error.to_string())
+}

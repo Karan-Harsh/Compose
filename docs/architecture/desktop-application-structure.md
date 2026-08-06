@@ -37,7 +37,7 @@ apps/desktop/
   vite.config.ts
 ```
 
-The current scaffold intentionally implements only the directories needed to support the Phase 1 shell. Additional directories like `components`, `features`, `hooks`, `platform`, and `public` should appear when they earn their keep rather than as empty placeholders.
+The repository now includes a Phase 3 palette feature module under `src/features/palette` and a dedicated `palette-store`. Additional directories like `components`, `hooks`, and `public` should still appear only when they earn their keep.
 
 ## Frontend Boundaries
 

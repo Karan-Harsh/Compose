@@ -100,17 +100,18 @@ Current progress:
 - `HotkeyService` registers the preferred shortcut with `tauri-plugin-global-shortcut`
 - Pressing the hotkey captures selected text first, then focuses the main window
 - `AccessibilityService` uses a guarded clipboard-fallback strategy (`get_selected_text`, `get_last_selection`)
-- `AiService` provider contracts with stub completion and OpenRouter adapter
-- Command registry metadata for rewrite/reply/translate/fix/summarize
-- Tauri commands and frontend client wiring for AI providers/completions
+- `AiService` exposes provider contracts, stub completion, and command registry metadata
+- Tauri commands and frontend client/store wiring added for settings, clipboard, hotkey, selection, and AI
 - Settings and AI service unit tests cover core contract behavior
 
-Next in Phase 2 / into Phase 3:
+Next in Phase 2:
 
+- Real provider adapters behind `AiProvider` (OpenAI, Anthropic, Gemini, Ollama)
 - Deeper AX/UIA selection paths behind `platform/`
-- Phase 3 command palette UI on top of these contracts
 
 ## Phase 3: Command Palette Shell
+
+Status: `In progress`
 
 Goals:
 
@@ -124,6 +125,21 @@ Focus:
 - User flow correctness
 - Command architecture
 - UI composability
+
+Current progress:
+
+- `features/palette` shell with search, filtered command list, context preview, and result panel
+- `palette-store` Zustand flows for discovery, keyboard navigation, and stub execution
+- App shell renders the palette as the primary surface
+- Main window sized for a compact palette (680×520)
+- Always-on-top + skip-taskbar window behavior
+- Hide on blur and Esc via `hide_palette`
+
+Next in Phase 3:
+
+- Stronger empty/error states and loading feedback
+- Keep provider UI out until real adapters exist
+- Then Phase 4 output insertion/review
 
 ## Phase 4: Text Workflows
 

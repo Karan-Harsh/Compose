@@ -19,7 +19,7 @@ We are not optimizing for rapid feature delivery or short-term hacks.
 
 ## Current Status
 
-The project has completed `Phase 0` and `Phase 1`, and is now in `Phase 2`.
+The project has completed `Phase 0`, `Phase 1`, and the core of `Phase 2`. It is now in `Phase 3`.
 
 Phase 0 established:
 
@@ -37,18 +37,22 @@ Phase 1 delivered:
 - Initial Rust command and service wiring
 - CI validation for install, lint, typecheck, web build, and native check
 
-Phase 2 has begun with:
+Phase 2 delivered native platform services:
 
-- SQLite-backed `SettingsService` (`load_settings` / `save_settings`)
-- `ClipboardService` text read/write commands
-- `HotkeyService` OS registration via `tauri-plugin-global-shortcut` (focuses main window)
-- `AccessibilityService` selected-text capture (`clipboard_fallback`) before window focus
-- Frontend command client and store wiring for the new platform services
-- `AiService` provider contracts with stub + OpenRouter support
-- Command registry metadata (rewrite, reply, translate, fix, summarize)
-- Root `.env.example` for `OPENROUTER_API_KEY` / `OPENROUTER_MODEL`
+- SQLite-backed `SettingsService`
+- `ClipboardService` text read/write
+- `HotkeyService` OS registration
+- `AccessibilityService` selection capture before window focus
+- `AiService` provider contracts with stub completion and command registry metadata
 
-Configure OpenRouter via the root `.env` file (see `.env.example`).
+Phase 3 has begun with:
+
+- Lightweight command palette shell (`features/palette`)
+- Command discovery, keyboard navigation, and stub execution
+- Palette-focused Zustand state flows
+- Compact always-on-top palette window with hide-on-blur / Esc
+
+Still deferred: output insertion into the source app, deeper AX/UIA paths, and richer Phase 4 workflows. OpenRouter is configured via the root `.env`.
 
 ## Product Direction
 
@@ -118,4 +122,4 @@ Major architectural decisions are captured as ADRs:
 
 ## Near-Term Focus
 
-Build the Phase 3 command palette on top of the AI provider contracts.
+Add Phase 4 output insertion/review on top of the palette shell.

@@ -38,6 +38,7 @@ export type SelectionCapture = {
   capturedAtMs: number
 }
 
+
 export type ProviderCapabilities = {
   supportsStreaming: boolean
   supportsSystemPrompt: boolean

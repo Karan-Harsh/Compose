@@ -14,11 +14,13 @@
       {
         "label": "main",
         "title": "TypeFlow",
-        "width": 1120,
-        "height": 760,
+        "width": 680,
+        "height": 520,
         "resizable": true,
         "center": true,
-        "visible": true
+        "visible": true,
+        "alwaysOnTop": true,
+        "skipTaskbar": true
       }
     ],
     "security": {
