@@ -2,7 +2,7 @@
 
 An open-source cross-platform desktop AI writing assistant built with a native shell and a web UI.
 
-The product goal is simple: remove the friction of switching between an application and a separate AI chat window just to rewrite or respond to text. A global shortcut should open a lightweight command palette anywhere the user can type, capture context, run a command, and return the output back into the active application.
+The goal is simple: eliminate the hassle of switching between an app and a separate AI chat window just to rewrite or respond to text. A universal shortcut opens a lightweight command palette wherever the user can type, captures the context, runs a command, and feeds the result back into the active application.
 
 This repository is being built deliberately as an engineering project first.
 

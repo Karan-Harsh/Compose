@@ -5,7 +5,7 @@ use tauri::{AppHandle, Runtime, State};
 
 use crate::state::app_state::AppState;
 
-const FOCUS_RETURN_DELAY: Duration = Duration::from_millis(180);
+const FOCUS_RETURN_DELAY: Duration = Duration::from_millis(120);
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -26,20 +26,40 @@ pub fn insert_text<R: Runtime>(
     state: State<'_, AppState>,
     request: InsertTextRequest,
 ) -> Result<InsertTextResponse, String> {
+    eprintln!(
+        "TypeFlow: insert_text start chars={}",
+        request.text.chars().count()
+    );
+
     state
         .window_service
         .hide_main_window(&app_handle)
         .map_err(|error| error.to_string())?;
+    eprintln!("TypeFlow: palette hidden before paste");
 
-    // Give the previously focused app time to become active again.
+    // Brief pause so hide settles before we force-activate the source app.
     thread::sleep(FOCUS_RETURN_DELAY);
 
     state
         .insertion_service
-        .insert_via_clipboard_paste(&state.clipboard_service, &request.text)
-        .map(|result| InsertTextResponse {
-            method: result.method,
-            restored_clipboard: result.restored_clipboard,
+        .insert_via_clipboard_paste(
+            &state.clipboard_service,
+            &state.accessibility_service,
+            &request.text,
+        )
+        .map(|result| {
+            eprintln!(
+                "TypeFlow: insert_text ok method={} restored_clipboard={}",
+                result.method, result.restored_clipboard
+            );
+            InsertTextResponse {
+                method: result.method,
+                restored_clipboard: result.restored_clipboard,
+            }
         })
-        .map_err(|error| error.to_string())
+        .map_err(|error| {
+            let message = error.to_string();
+            eprintln!("TypeFlow: insert_text failed: {message}");
+            message
+        })
 }

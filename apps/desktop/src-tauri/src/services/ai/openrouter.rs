@@ -116,31 +116,50 @@ impl AiProvider for OpenRouterProvider {
         }
 
         let url = format!("{}/chat/completions", self.config.base_url);
+        let request_json = serde_json::to_string_pretty(&payload).unwrap_or_else(|_| {
+            format!("{{\"model\":\"{model}\",\"messages\":\"<unserializable>\"}}")
+        });
+        eprintln!("TypeFlow: OpenRouter request url={url}\n{request_json}");
+
         let response = self
             .client
-            .post(url)
+            .post(&url)
             .headers(headers)
             .json(&payload)
             .send()
-            .map_err(|error| AppError::Ai(format!("OpenRouter request failed: {error}")))?;
+            .map_err(|error| {
+                let message = format!("OpenRouter request failed: {error}");
+                eprintln!("TypeFlow: {message}");
+                AppError::Ai(message)
+            })?;
 
         let status = response.status();
         let body = response
             .text()
-            .map_err(|error| AppError::Ai(format!("failed to read OpenRouter response: {error}")))?;
+            .map_err(|error| {
+                let message = format!("failed to read OpenRouter response: {error}");
+                eprintln!("TypeFlow: {message}");
+                AppError::Ai(message)
+            })?;
+
+        eprintln!("TypeFlow: OpenRouter raw response status={status}\n{body}");
 
         if !status.is_success() {
-            return Err(AppError::Ai(format!(
-                "OpenRouter returned {status}: {body}"
-            )));
+            let message = format!("OpenRouter returned {status}: {body}");
+            eprintln!("TypeFlow: {message}");
+            return Err(AppError::Ai(message));
         }
 
         let parsed: OpenRouterChatResponse = serde_json::from_str(&body).map_err(|error| {
-            AppError::Ai(format!("failed to parse OpenRouter response: {error}"))
+            let message = format!("failed to parse OpenRouter response: {error}; body={body}");
+            eprintln!("TypeFlow: {message}");
+            AppError::Ai(message)
         })?;
 
         let choice = parsed.choices.first().ok_or_else(|| {
-            AppError::Ai("OpenRouter response contained no choices".to_string())
+            let message = "OpenRouter response contained no choices".to_string();
+            eprintln!("TypeFlow: {message}; body={body}");
+            AppError::Ai(message)
         })?;
 
         let content = choice
@@ -152,10 +171,16 @@ impl AiProvider for OpenRouterProvider {
             .to_string();
 
         if content.is_empty() {
-            return Err(AppError::Ai(
-                "OpenRouter returned an empty completion".to_string(),
-            ));
+            let message = "OpenRouter returned an empty completion".to_string();
+            eprintln!("TypeFlow: {message}; body={body}");
+            return Err(AppError::Ai(message));
         }
+
+        eprintln!(
+            "TypeFlow: OpenRouter parsed content model={}\n{}",
+            parsed.model.as_deref().unwrap_or(&model),
+            content
+        );
 
         Ok(AiCompletionResponse {
             provider_id: self.id().to_string(),

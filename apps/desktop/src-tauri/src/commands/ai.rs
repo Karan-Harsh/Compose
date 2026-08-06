@@ -157,14 +157,35 @@ pub fn complete_ai(
             .collect(),
     };
 
-    state
-        .ai_service
-        .complete(completion)
-        .map(|response| AiCompletionResponsePayload {
-            provider_id: response.provider_id,
-            model: response.model,
-            content: response.content,
-            finish_reason: response.finish_reason,
-        })
-        .map_err(|error| error.to_string())
+    let command_label = completion
+        .command_id
+        .clone()
+        .unwrap_or_else(|| "none".to_string());
+    let messages_preview = completion
+        .messages
+        .iter()
+        .map(|message| format!("[{}] {}", message.role, message.content))
+        .collect::<Vec<_>>()
+        .join("\n");
+    eprintln!("TypeFlow: complete_ai command={command_label}\n{messages_preview}");
+
+    match state.ai_service.complete(completion) {
+        Ok(response) => {
+            eprintln!(
+                "TypeFlow: complete_ai ok provider={} model={}\n{}",
+                response.provider_id, response.model, response.content
+            );
+            Ok(AiCompletionResponsePayload {
+                provider_id: response.provider_id,
+                model: response.model,
+                content: response.content,
+                finish_reason: response.finish_reason,
+            })
+        }
+        Err(error) => {
+            let message = error.to_string();
+            eprintln!("TypeFlow: complete_ai failed command={command_label}: {message}");
+            Err(message)
+        }
+    }
 }

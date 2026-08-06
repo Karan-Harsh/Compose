@@ -138,15 +138,25 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
     set({ isRunning: true, error: null, result: null, statusMessage: null })
 
     try {
+      console.info('[TypeFlow] running command', commandId, {
+        inputChars: input.length
+      })
       const result = await completeAi({
         commandId,
         messages: [{ role: 'user', content: input }]
       })
+      console.info('[TypeFlow] command ok', commandId, {
+        provider: result.providerId,
+        model: result.model,
+        chars: result.content.length
+      })
       set({ result, isRunning: false, query: `/${commandId}` })
     } catch (executionError) {
+      const message = toErrorMessage(executionError, 'Command execution failed')
+      console.error('[TypeFlow] command failed', commandId, message, executionError)
       set({
         isRunning: false,
-        error: toErrorMessage(executionError, 'Command execution failed')
+        error: message
       })
     }
   },
@@ -160,7 +170,9 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
     set({ isInserting: true, error: null, statusMessage: null })
 
     try {
-      await insertText(content)
+      console.info('[TypeFlow] replace/insert start', { chars: content.length })
+      const insertion = await insertText(content)
+      console.info('[TypeFlow] replace/insert ok', insertion)
       set({
         isInserting: false,
         result: null,
@@ -168,9 +180,11 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
         statusMessage: 'Inserted into the previous app'
       })
     } catch (insertionError) {
+      const message = toErrorMessage(insertionError, 'Failed to insert text')
+      console.error('[TypeFlow] replace/insert failed', message, insertionError)
       set({
         isInserting: false,
-        error: toErrorMessage(insertionError, 'Failed to insert text')
+        error: message
       })
     }
   },

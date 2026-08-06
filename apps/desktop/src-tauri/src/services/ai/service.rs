@@ -47,15 +47,25 @@ impl AiService {
         let mut active_provider_id = "stub".to_string();
 
         if let Some(config) = OpenRouterConfig::from_env() {
+            eprintln!(
+                "TypeFlow: OpenRouter env loaded model={} key_len={}",
+                config.model,
+                config.api_key.len()
+            );
             match OpenRouterProvider::new(config) {
                 Ok(provider) => {
                     active_provider_id = provider.id().to_string();
                     providers.push(Box::new(provider));
+                    eprintln!("TypeFlow: active AI provider = openrouter");
                 }
                 Err(error) => {
                     eprintln!("TypeFlow: failed to initialize OpenRouter provider: {error}");
                 }
             }
+        } else {
+            eprintln!(
+                "TypeFlow: OPENROUTER_API_KEY missing/placeholder; active AI provider = stub"
+            );
         }
 
         Self {

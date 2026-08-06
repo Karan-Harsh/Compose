@@ -5,6 +5,7 @@ use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 use serde::Serialize;
 
 use crate::error::app_error::{AppError, AppResult};
+use crate::platform::focus::{self, FrontmostApp};
 use crate::platform::input;
 use crate::services::clipboard_service::ClipboardService;
 
@@ -31,6 +32,7 @@ pub struct SelectionCapture {
 #[derive(Debug, Default)]
 pub struct AccessibilityService {
     last_capture: Mutex<Option<SelectionCapture>>,
+    source_app: Mutex<Option<FrontmostApp>>,
 }
 
 impl AccessibilityService {
@@ -54,10 +56,18 @@ impl AccessibilityService {
             .map_err(|_| AppError::Accessibility("selection lock poisoned".to_string()))
     }
 
+    pub fn source_app(&self) -> AppResult<Option<FrontmostApp>> {
+        self.source_app
+            .lock()
+            .map(|guard| guard.clone())
+            .map_err(|_| AppError::Accessibility("source app lock poisoned".to_string()))
+    }
+
     pub fn capture_and_remember(
         &self,
         clipboard: &ClipboardService,
     ) -> AppResult<SelectionCapture> {
+        self.remember_source_app()?;
         let capture = self.capture_with_clipboard_fallback(clipboard)?;
         self.remember(capture.clone())?;
         Ok(capture)
@@ -69,6 +79,24 @@ impl AccessibilityService {
             .lock()
             .map_err(|_| AppError::Accessibility("selection lock poisoned".to_string()))? =
             Some(capture);
+        Ok(())
+    }
+
+    fn remember_source_app(&self) -> AppResult<()> {
+        let app = focus::get_frontmost_app()?;
+        if let Some(ref app) = app {
+            eprintln!(
+                "TypeFlow: remembered source app name={} pid={}",
+                app.name, app.pid
+            );
+        } else {
+            eprintln!("TypeFlow: no frontmost app available to remember");
+        }
+
+        *self
+            .source_app
+            .lock()
+            .map_err(|_| AppError::Accessibility("source app lock poisoned".to_string()))? = app;
         Ok(())
     }
 
