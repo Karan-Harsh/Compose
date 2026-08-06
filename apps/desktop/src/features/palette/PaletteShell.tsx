@@ -10,7 +10,9 @@ export function PaletteShell() {
   const context = usePaletteStore((state) => state.context)
   const result = usePaletteStore((state) => state.result)
   const isRunning = usePaletteStore((state) => state.isRunning)
+  const isInserting = usePaletteStore((state) => state.isInserting)
   const error = usePaletteStore((state) => state.error)
+  const statusMessage = usePaletteStore((state) => state.statusMessage)
   const bootstrap = usePaletteStore((state) => state.bootstrap)
   const refreshContext = usePaletteStore((state) => state.refreshContext)
   const setQuery = usePaletteStore((state) => state.setQuery)
@@ -18,6 +20,8 @@ export function PaletteShell() {
   const selectIndex = usePaletteStore((state) => state.selectIndex)
   const executeSelected = usePaletteStore((state) => state.executeSelected)
   const executeCommand = usePaletteStore((state) => state.executeCommand)
+  const replaceWithResult = usePaletteStore((state) => state.replaceWithResult)
+  const copyResult = usePaletteStore((state) => state.copyResult)
   const clearResult = usePaletteStore((state) => state.clearResult)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -59,9 +63,19 @@ export function PaletteShell() {
       return
     }
 
+    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey) && result) {
+      event.preventDefault()
+      void replaceWithResult()
+      return
+    }
+
     if (event.key === 'Enter') {
       event.preventDefault()
-      void executeSelected()
+      if (result) {
+        void replaceWithResult()
+      } else {
+        void executeSelected()
+      }
       return
     }
 
@@ -127,16 +141,41 @@ export function PaletteShell() {
           {error ? (
             <p className="text-sm text-red-700">{error}</p>
           ) : null}
+          {statusMessage ? (
+            <p className="text-sm text-stone-600">{statusMessage}</p>
+          ) : null}
           {isRunning ? (
             <p className="text-sm text-stone-600">Running command…</p>
           ) : null}
+          {isInserting ? (
+            <p className="text-sm text-stone-600">Inserting into previous app…</p>
+          ) : null}
           {result ? (
-            <div className="space-y-2">
+            <div className="space-y-3">
               <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-amber-700">
                 Result · {result.providerId} · {result.finishReason}
               </p>
               <p className="whitespace-pre-wrap text-sm leading-6 text-stone-800">
                 {result.content}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  className="rounded-full bg-stone-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-stone-800"
+                  onClick={() => void replaceWithResult()}
+                  type="button"
+                >
+                  Replace
+                </button>
+                <button
+                  className="rounded-full border border-stone-950/15 bg-white px-4 py-2 text-sm font-medium text-stone-900 transition hover:bg-stone-50"
+                  onClick={() => void copyResult()}
+                  type="button"
+                >
+                  Copy
+                </button>
+              </div>
+              <p className="text-xs text-stone-500">
+                Enter / ⌘Enter replaces selection in the previous app
               </p>
             </div>
           ) : (

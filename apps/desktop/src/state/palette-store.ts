@@ -2,7 +2,9 @@ import { create } from 'zustand'
 import {
   completeAi,
   getLastSelection,
-  listCommands
+  insertText,
+  listCommands,
+  setClipboardText
 } from '@/lib/tauri/commands'
 import type {
   AiCompletionResponse,
@@ -18,7 +20,9 @@ type PaletteStore = {
   context: SelectionCapture | null
   result: AiCompletionResponse | null
   isRunning: boolean
+  isInserting: boolean
   error: string | null
+  statusMessage: string | null
   bootstrap: () => Promise<void>
   refreshContext: () => Promise<void>
   setQuery: (query: string) => void
@@ -26,6 +30,8 @@ type PaletteStore = {
   selectIndex: (index: number) => void
   executeSelected: () => Promise<void>
   executeCommand: (commandId: string) => Promise<void>
+  replaceWithResult: () => Promise<void>
+  copyResult: () => Promise<void>
   clearResult: () => void
 }
 
@@ -59,7 +65,9 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
   context: null,
   result: null,
   isRunning: false,
+  isInserting: false,
   error: null,
+  statusMessage: null,
   async bootstrap() {
     try {
       const [commands, context] = await Promise.all([
@@ -71,7 +79,8 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
         filteredCommands: commands,
         context,
         selectedIndex: 0,
-        error: null
+        error: null,
+        statusMessage: null
       })
     } catch (bootstrapError) {
       set({
@@ -126,7 +135,7 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
       get().context?.text?.trim() ||
       'Select text in another app, then open TypeFlow with the hotkey.'
 
-    set({ isRunning: true, error: null, result: null })
+    set({ isRunning: true, error: null, result: null, statusMessage: null })
 
     try {
       const result = await completeAi({
@@ -141,7 +150,47 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
       })
     }
   },
+  async replaceWithResult() {
+    const content = get().result?.content
+    if (!content?.trim()) {
+      set({ error: 'No result available to insert' })
+      return
+    }
+
+    set({ isInserting: true, error: null, statusMessage: null })
+
+    try {
+      await insertText(content)
+      set({
+        isInserting: false,
+        result: null,
+        query: '',
+        statusMessage: 'Inserted into the previous app'
+      })
+    } catch (insertionError) {
+      set({
+        isInserting: false,
+        error: toErrorMessage(insertionError, 'Failed to insert text')
+      })
+    }
+  },
+  async copyResult() {
+    const content = get().result?.content
+    if (!content?.trim()) {
+      set({ error: 'No result available to copy' })
+      return
+    }
+
+    try {
+      await setClipboardText(content)
+      set({ statusMessage: 'Copied result to clipboard', error: null })
+    } catch (copyError) {
+      set({
+        error: toErrorMessage(copyError, 'Failed to copy result')
+      })
+    }
+  },
   clearResult() {
-    set({ result: null })
+    set({ result: null, statusMessage: null })
   }
 }))

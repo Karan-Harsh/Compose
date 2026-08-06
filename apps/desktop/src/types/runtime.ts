@@ -38,6 +38,10 @@ export type SelectionCapture = {
   capturedAtMs: number
 }
 
+export type InsertionResult = {
+  method: string
+  restoredClipboard: boolean
+}
 
 export type ProviderCapabilities = {
   supportsStreaming: boolean

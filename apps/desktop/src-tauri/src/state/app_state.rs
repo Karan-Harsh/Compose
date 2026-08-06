@@ -4,6 +4,7 @@ use crate::services::ai::AiService;
 use crate::services::app_info_service::AppInfoService;
 use crate::services::clipboard_service::ClipboardService;
 use crate::services::hotkey_service::HotkeyService;
+use crate::services::insertion_service::InsertionService;
 use crate::services::settings_service::SettingsService;
 use crate::services::window_service::WindowService;
 use tauri::{AppHandle, Manager, Runtime};
@@ -16,6 +17,7 @@ pub struct AppState {
     pub clipboard_service: ClipboardService,
     pub hotkey_service: HotkeyService,
     pub accessibility_service: AccessibilityService,
+    pub insertion_service: InsertionService,
     pub ai_service: AiService,
 }
 
@@ -33,6 +35,7 @@ impl AppState {
             clipboard_service: ClipboardService,
             hotkey_service: HotkeyService::default(),
             accessibility_service: AccessibilityService::default(),
+            insertion_service: InsertionService,
             ai_service: AiService::new(),
         })
     }

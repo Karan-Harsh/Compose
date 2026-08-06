@@ -9,6 +9,7 @@ import type {
   CommandDefinition,
   HealthCheck,
   HotkeyStatus,
+  InsertionResult,
   SelectedText,
   SelectionCapture
 } from '@/types/runtime'
@@ -89,3 +90,6 @@ export async function completeAi(
   return invoke<AiCompletionResponse>('complete_ai', { request })
 }
 
+export async function insertText(text: string): Promise<InsertionResult> {
+  return invoke<InsertionResult>('insert_text', { request: { text } })
+}

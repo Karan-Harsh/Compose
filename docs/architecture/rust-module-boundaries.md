@@ -24,6 +24,7 @@ apps/desktop/src-tauri/src/
     clipboard_service.rs
     hotkey_service.rs
     accessibility_service.rs
+    insertion_service.rs
     ai/
       mod.rs
       types.rs

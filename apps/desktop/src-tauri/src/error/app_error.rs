@@ -20,6 +20,8 @@ pub enum AppError {
     Hotkey(String),
     #[error("accessibility error: {0}")]
     Accessibility(String),
+    #[error("insertion error: {0}")]
+    Insertion(String),
     #[error("ai error: {0}")]
     Ai(String),
     #[error("io error: {0}")]

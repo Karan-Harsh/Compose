@@ -143,6 +143,8 @@ Next in Phase 3:
 
 ## Phase 4: Text Workflows
 
+Status: `In progress`
+
 Goals:
 
 - Add first-party commands like rewrite, tone, summarize, and grammar fix
@@ -154,6 +156,12 @@ Focus:
 - Reliability over breadth
 - Clear command behavior contracts
 - Prompt versioning discipline
+
+Current progress:
+
+- `InsertionService` pastes results via clipboard fallback (`insert_text`)
+- Palette review actions: Replace (insert) and Copy
+- Enter / ⌘Enter inserts when a result is shown
 
 ## Phase 5: Provider Ecosystem
 

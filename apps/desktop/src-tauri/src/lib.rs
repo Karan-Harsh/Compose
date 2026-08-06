@@ -63,7 +63,8 @@ pub fn run() {
             commands::ai::get_active_ai_provider,
             commands::ai::set_active_ai_provider,
             commands::ai::list_commands,
-            commands::ai::complete_ai
+            commands::ai::complete_ai,
+            commands::insertion::insert_text
         ])
         .run(tauri::generate_context!())
         .expect("failed to run TypeFlow desktop application");

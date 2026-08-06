@@ -52,7 +52,7 @@ Phase 3 has begun with:
 - Palette-focused Zustand state flows
 - Compact always-on-top palette window with hide-on-blur / Esc
 
-Still deferred: output insertion into the source app, deeper AX/UIA paths, and richer Phase 4 workflows. OpenRouter is configured via the root `.env`.
+Still deferred: deeper AX/UIA replace paths and richer Phase 4 prompt workflows. OpenRouter is configured via the root `.env`.
 
 ## Product Direction
 
@@ -122,4 +122,4 @@ Major architectural decisions are captured as ADRs:
 
 ## Near-Term Focus
 
-Add Phase 4 output insertion/review on top of the palette shell.
+Configure OpenRouter in the root `.env` (`OPENROUTER_API_KEY`, `OPENROUTER_MODEL`), then polish insertion reliability and Phase 4 prompt/review flows.
