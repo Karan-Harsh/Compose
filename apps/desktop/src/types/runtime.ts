@@ -37,3 +37,42 @@ export type SelectionCapture = {
   empty: boolean
   capturedAtMs: number
 }
+
+export type ProviderCapabilities = {
+  supportsStreaming: boolean
+  supportsSystemPrompt: boolean
+}
+
+export type AiProviderInfo = {
+  id: string
+  kind: string
+  displayName: string
+  configured: boolean
+  capabilities: ProviderCapabilities
+}
+
+export type CommandDefinition = {
+  id: string
+  description: string
+  requiresInput: boolean
+  requiresContext: boolean
+}
+
+export type AiMessage = {
+  role: string
+  content: string
+}
+
+export type AiCompletionRequest = {
+  providerId?: string
+  model?: string
+  commandId?: string
+  messages: AiMessage[]
+}
+
+export type AiCompletionResponse = {
+  providerId: string
+  model: string
+  content: string
+  finishReason: string
+}

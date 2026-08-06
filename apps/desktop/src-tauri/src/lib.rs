@@ -53,7 +53,12 @@ pub fn run() {
             commands::hotkey::get_hotkey_status,
             commands::hotkey::set_global_hotkey,
             commands::accessibility::get_selected_text,
-            commands::accessibility::get_last_selection
+            commands::accessibility::get_last_selection,
+            commands::ai::list_ai_providers,
+            commands::ai::get_active_ai_provider,
+            commands::ai::set_active_ai_provider,
+            commands::ai::list_commands,
+            commands::ai::complete_ai
         ])
         .run(tauri::generate_context!())
         .expect("failed to run TypeFlow desktop application");

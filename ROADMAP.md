@@ -100,14 +100,15 @@ Current progress:
 - `HotkeyService` registers the preferred shortcut with `tauri-plugin-global-shortcut`
 - Pressing the hotkey captures selected text first, then focuses the main window
 - `AccessibilityService` uses a guarded clipboard-fallback strategy (`get_selected_text`, `get_last_selection`)
-- Tauri commands and frontend client/store wiring added for settings, clipboard, hotkey, and selection
-- Settings service unit tests cover default load and validation
+- `AiService` provider contracts with stub completion and OpenRouter adapter
+- Command registry metadata for rewrite/reply/translate/fix/summarize
+- Tauri commands and frontend client wiring for AI providers/completions
+- Settings and AI service unit tests cover core contract behavior
 
-Next in Phase 2:
+Next in Phase 2 / into Phase 3:
 
 - Deeper AX/UIA selection paths behind `platform/`
-- AI provider contracts (still no UI feature commands)
-- Lightweight command registry metadata without Phase 3 palette UI
+- Phase 3 command palette UI on top of these contracts
 
 ## Phase 3: Command Palette Shell
 

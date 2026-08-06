@@ -1,8 +1,12 @@
 import { invoke } from '@tauri-apps/api/core'
 import type {
+  AiCompletionRequest,
+  AiCompletionResponse,
+  AiProviderInfo,
   AppInfo,
   AppSettings,
   ClipboardText,
+  CommandDefinition,
   HealthCheck,
   HotkeyStatus,
   SelectedText,
@@ -53,4 +57,30 @@ export async function getSelectedText(): Promise<SelectedText> {
 
 export async function getLastSelection(): Promise<SelectionCapture | null> {
   return invoke<SelectionCapture | null>('get_last_selection')
+}
+
+export async function listAiProviders(): Promise<AiProviderInfo[]> {
+  return invoke<AiProviderInfo[]>('list_ai_providers')
+}
+
+export async function getActiveAiProvider(): Promise<AiProviderInfo> {
+  return invoke<AiProviderInfo>('get_active_ai_provider')
+}
+
+export async function setActiveAiProvider(
+  providerId: string
+): Promise<AiProviderInfo> {
+  return invoke<AiProviderInfo>('set_active_ai_provider', {
+    request: { providerId }
+  })
+}
+
+export async function listCommands(): Promise<CommandDefinition[]> {
+  return invoke<CommandDefinition[]>('list_commands')
+}
+
+export async function completeAi(
+  request: AiCompletionRequest
+): Promise<AiCompletionResponse> {
+  return invoke<AiCompletionResponse>('complete_ai', { request })
 }

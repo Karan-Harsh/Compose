@@ -24,6 +24,13 @@ apps/desktop/src-tauri/src/
     clipboard_service.rs
     hotkey_service.rs
     accessibility_service.rs
+    ai/
+      mod.rs
+      types.rs
+      provider.rs
+      stub.rs
+      registry.rs
+      service.rs
   platform/
     mod.rs
     input.rs
@@ -37,7 +44,7 @@ apps/desktop/src-tauri/src/
   main.rs
 ```
 
-Phase 2 introduced real settings, clipboard, hotkey, accessibility, and `platform/input` modules. Deeper OS-specific AX/UIA capture should still grow behind `platform/` as needed.
+Phase 2 introduced settings, clipboard, hotkey, accessibility, AI provider contracts, and `platform/input`. Real provider adapters and deeper OS-specific AX/UIA capture should still grow behind stable interfaces.
 
 ## Module Responsibilities
 

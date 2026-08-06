@@ -1,5 +1,6 @@
 use crate::error::app_error::{AppError, AppResult};
 use crate::services::accessibility_service::AccessibilityService;
+use crate::services::ai::AiService;
 use crate::services::app_info_service::AppInfoService;
 use crate::services::clipboard_service::ClipboardService;
 use crate::services::hotkey_service::HotkeyService;
@@ -15,6 +16,7 @@ pub struct AppState {
     pub clipboard_service: ClipboardService,
     pub hotkey_service: HotkeyService,
     pub accessibility_service: AccessibilityService,
+    pub ai_service: AiService,
 }
 
 impl AppState {
@@ -31,6 +33,7 @@ impl AppState {
             clipboard_service: ClipboardService,
             hotkey_service: HotkeyService::default(),
             accessibility_service: AccessibilityService::default(),
+            ai_service: AiService::new(),
         })
     }
 }

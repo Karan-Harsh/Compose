@@ -44,8 +44,11 @@ Phase 2 has begun with:
 - `HotkeyService` OS registration via `tauri-plugin-global-shortcut` (focuses main window)
 - `AccessibilityService` selected-text capture (`clipboard_fallback`) before window focus
 - Frontend command client and store wiring for the new platform services
+- `AiService` provider contracts with stub + OpenRouter support
+- Command registry metadata (rewrite, reply, translate, fix, summarize)
+- Root `.env.example` for `OPENROUTER_API_KEY` / `OPENROUTER_MODEL`
 
-Still deferred in Phase 2: deeper AX/UIA capture, AI provider contracts, and the product command registry pipeline.
+Configure OpenRouter via the root `.env` file (see `.env.example`).
 
 ## Product Direction
 
@@ -115,4 +118,4 @@ Major architectural decisions are captured as ADRs:
 
 ## Near-Term Focus
 
-Deepen Phase 2: define AI provider contracts and a lightweight command registry, keep product command UI out until Phase 3.
+Build the Phase 3 command palette on top of the AI provider contracts.
