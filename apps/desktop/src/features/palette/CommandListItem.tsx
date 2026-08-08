@@ -15,7 +15,7 @@ export function CommandListItem({
 }: CommandListItemProps) {
   return (
     <button
-      className={`flex w-full items-start gap-3 px-4 py-3 text-left transition ${
+      className={`flex w-full items-center gap-3 px-4 py-2 text-left transition ${
         active
           ? 'bg-stone-950 text-stone-50'
           : 'text-stone-800 hover:bg-stone-900/5'
@@ -25,14 +25,14 @@ export function CommandListItem({
       type="button"
     >
       <span
-        className={`font-mono text-sm ${
+        className={`w-20 shrink-0 font-mono text-[12px] ${
           active ? 'text-amber-300' : 'text-amber-700'
         }`}
       >
         /{id}
       </span>
       <span
-        className={`text-sm leading-5 ${
+        className={`truncate text-[13px] leading-5 ${
           active ? 'text-stone-200' : 'text-stone-600'
         }`}
       >

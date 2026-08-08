@@ -30,7 +30,7 @@ impl AppState {
 
         Ok(Self {
             app_info_service: AppInfoService,
-            window_service: WindowService,
+            window_service: WindowService::default(),
             settings_service: SettingsService::open(&app_data_dir)?,
             clipboard_service: ClipboardService,
             hotkey_service: HotkeyService::default(),

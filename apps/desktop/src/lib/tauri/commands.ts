@@ -30,6 +30,10 @@ export async function hidePalette(): Promise<void> {
   return invoke<void>('hide_palette')
 }
 
+export async function setPaletteSession(active: boolean): Promise<void> {
+  return invoke<void>('set_palette_session', { request: { active } })
+}
+
 export async function loadSettings(): Promise<AppSettings> {
   return invoke<AppSettings>('load_settings')
 }

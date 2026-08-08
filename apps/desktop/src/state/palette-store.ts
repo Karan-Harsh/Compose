@@ -4,7 +4,8 @@ import {
   getLastSelection,
   insertText,
   listCommands,
-  setClipboardText
+  setClipboardText,
+  setPaletteSession
 } from '@/lib/tauri/commands'
 import type {
   AiCompletionResponse,
@@ -24,6 +25,7 @@ type PaletteStore = {
   error: string | null
   statusMessage: string | null
   bootstrap: () => Promise<void>
+  onPaletteOpened: (resumed: boolean) => Promise<void>
   refreshContext: () => Promise<void>
   setQuery: (query: string) => void
   moveSelection: (delta: number) => void
@@ -33,6 +35,7 @@ type PaletteStore = {
   replaceWithResult: () => Promise<void>
   copyResult: () => Promise<void>
   clearResult: () => void
+  dismissSession: () => Promise<void>
 }
 
 function toErrorMessage(error: unknown, fallback: string): string {
@@ -57,6 +60,14 @@ function filterCommands(
   })
 }
 
+async function syncSessionActive(active: boolean) {
+  try {
+    await setPaletteSession(active)
+  } catch (error) {
+    console.warn('[TypeFlow] failed to sync palette session', error)
+  }
+}
+
 export const usePaletteStore = create<PaletteStore>((set, get) => ({
   query: '',
   commands: [],
@@ -76,15 +87,48 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
       ])
       set({
         commands,
-        filteredCommands: commands,
+        filteredCommands: filterCommands(commands, get().query),
         context,
-        selectedIndex: 0,
-        error: null,
-        statusMessage: null
+        error: null
       })
     } catch (bootstrapError) {
       set({
         error: toErrorMessage(bootstrapError, 'Failed to load command palette')
+      })
+    }
+  },
+  async onPaletteOpened(resumed) {
+    if (resumed) {
+      // Keep query/result; only refresh context snapshot if needed.
+      try {
+        const context = await getLastSelection()
+        set({ context, error: null, statusMessage: null })
+      } catch {
+        // Keep existing context on resume failures.
+      }
+      return
+    }
+
+    try {
+      const context = await getLastSelection()
+      const commands = get().commands.length
+        ? get().commands
+        : await listCommands()
+      set({
+        commands,
+        filteredCommands: commands,
+        context,
+        query: '',
+        selectedIndex: 0,
+        result: null,
+        isRunning: false,
+        error: null,
+        statusMessage: null
+      })
+      await syncSessionActive(false)
+    } catch (openError) {
+      set({
+        error: toErrorMessage(openError, 'Failed to open command palette')
       })
     }
   },
@@ -136,6 +180,7 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
       'Select text in another app, then open TypeFlow with the hotkey.'
 
     set({ isRunning: true, error: null, result: null, statusMessage: null })
+    await syncSessionActive(true)
 
     try {
       console.info('[TypeFlow] running command', commandId, {
@@ -151,6 +196,7 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
         chars: result.content.length
       })
       set({ result, isRunning: false, query: `/${commandId}` })
+      await syncSessionActive(true)
     } catch (executionError) {
       const message = toErrorMessage(executionError, 'Command execution failed')
       console.error('[TypeFlow] command failed', commandId, message, executionError)
@@ -158,6 +204,7 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
         isRunning: false,
         error: message
       })
+      await syncSessionActive(false)
     }
   },
   async replaceWithResult() {
@@ -168,6 +215,7 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
     }
 
     set({ isInserting: true, error: null, statusMessage: null })
+    await syncSessionActive(true)
 
     try {
       console.info('[TypeFlow] replace/insert start', { chars: content.length })
@@ -177,8 +225,9 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
         isInserting: false,
         result: null,
         query: '',
-        statusMessage: 'Inserted into the previous app'
+        statusMessage: null
       })
+      await syncSessionActive(false)
     } catch (insertionError) {
       const message = toErrorMessage(insertionError, 'Failed to insert text')
       console.error('[TypeFlow] replace/insert failed', message, insertionError)
@@ -186,6 +235,7 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
         isInserting: false,
         error: message
       })
+      await syncSessionActive(Boolean(get().result))
     }
   },
   async copyResult() {
@@ -197,7 +247,7 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
 
     try {
       await setClipboardText(content)
-      set({ statusMessage: 'Copied result to clipboard', error: null })
+      set({ statusMessage: 'Copied', error: null })
     } catch (copyError) {
       set({
         error: toErrorMessage(copyError, 'Failed to copy result')
@@ -206,5 +256,16 @@ export const usePaletteStore = create<PaletteStore>((set, get) => ({
   },
   clearResult() {
     set({ result: null, statusMessage: null })
+    void syncSessionActive(false)
+  },
+  async dismissSession() {
+    set({
+      result: null,
+      query: '',
+      statusMessage: null,
+      error: null,
+      isRunning: false
+    })
+    await syncSessionActive(false)
   }
 }))

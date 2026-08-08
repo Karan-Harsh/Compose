@@ -24,11 +24,11 @@ pub fn run() {
                         }
 
                         if let Some(state) = app.try_state::<AppState>() {
-                            // Capture while the previous app still has focus.
-                            let _ = state
-                                .accessibility_service
-                                .capture_and_remember(&state.clipboard_service);
-                            let _ = state.window_service.show_main_window(app);
+                            let _ = state.window_service.open_palette_from_hotkey(
+                                app,
+                                &state.accessibility_service,
+                                &state.clipboard_service,
+                            );
                         }
                     })
                     .build(),
@@ -51,6 +51,7 @@ pub fn run() {
             commands::app::health_check,
             commands::window::show_palette,
             commands::window::hide_palette,
+            commands::window::set_palette_session,
             commands::settings::load_settings,
             commands::settings::save_settings,
             commands::clipboard::get_clipboard_text,
