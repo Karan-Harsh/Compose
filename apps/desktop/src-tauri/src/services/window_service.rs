@@ -2,6 +2,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 
 use serde::Serialize;
 use tauri::{AppHandle, Emitter, Manager, Runtime, WindowEvent};
+use tauri::utils::config::Color;
 
 use crate::error::app_error::{AppError, AppResult};
 
@@ -13,7 +14,7 @@ pub struct PaletteOpenedPayload {
 
 #[derive(Debug, Default)]
 pub struct WindowService {
-    /// When true, blur must not auto-hide (AI running or result under review).
+    /// When true, the next hotkey reopens the existing session (result/context).
     session_active: AtomicBool,
 }
 
@@ -29,19 +30,14 @@ impl WindowService {
         window.set_always_on_top(true)?;
         window.set_skip_taskbar(true)?;
         let _ = window.set_decorations(false);
+        let _ = window.set_shadow(false);
+        // Clear native window + webview background so only the palette card shows.
+        let _ = window.set_background_color(Some(Color(0, 0, 0, 0)));
 
         let hide_target = window.clone();
-        let app_for_flag = app_handle.clone();
         window.on_window_event(move |event| {
             if let WindowEvent::Focused(false) = event {
-                let Some(state) = app_for_flag.try_state::<crate::state::app_state::AppState>()
-                else {
-                    return;
-                };
-                if state.window_service.is_session_active() {
-                    eprintln!("TypeFlow: blur ignored (session active)");
-                    return;
-                }
+                eprintln!("TypeFlow: blur — hiding palette");
                 let _ = hide_target.hide();
             }
         });
@@ -70,6 +66,8 @@ impl WindowService {
             .get_webview_window("main")
             .ok_or(AppError::WindowUnavailable)?;
 
+        let _ = window.set_background_color(Some(Color(0, 0, 0, 0)));
+        let _ = window.set_shadow(false);
         window.set_always_on_top(true)?;
         window.show()?;
         window.unminimize()?;

@@ -119,8 +119,8 @@ export function PaletteShell() {
   const showCommands = !result && !isRunning
 
   return (
-    <div className="flex h-screen w-screen items-start justify-center bg-transparent px-3 pt-10 text-stone-100">
-      <section className="flex w-full max-w-[480px] flex-col overflow-hidden rounded-xl border border-stone-900/10 bg-stone-50/95 text-stone-950 shadow-[0_18px_50px_rgba(0,0,0,0.35)] backdrop-blur-md">
+    <div className="box-border h-screen w-screen bg-transparent p-0">
+      <section className="flex h-full w-full flex-col overflow-hidden rounded-xl border border-stone-900/10 bg-stone-50 text-stone-950 shadow-[0_18px_50px_rgba(0,0,0,0.35)]">
         <header className="flex items-center gap-3 border-b border-stone-900/8 px-4 py-3">
           <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.28em] text-amber-700">
             TypeFlow
@@ -143,7 +143,7 @@ export function PaletteShell() {
         </div>
 
         {showCommands ? (
-          <div className="max-h-52 overflow-y-auto py-1">
+          <div className="min-h-0 flex-1 overflow-y-auto py-1">
             {filteredCommands.length === 0 ? (
               <p className="px-4 py-4 text-sm text-stone-500">No commands match.</p>
             ) : (
@@ -200,7 +200,7 @@ export function PaletteShell() {
           ) : null}
           {!result && !isRunning && !error && !statusMessage ? (
             <p className="text-[11px] text-stone-400">
-              ↑↓ · Enter run · Esc hide
+              ↑↓ · Enter run · click away to hide
             </p>
           ) : null}
         </footer>
